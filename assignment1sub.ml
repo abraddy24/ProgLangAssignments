@@ -114,7 +114,7 @@ let orderedByLength ((x : string), (y : string), (z : string)) =
    integers more than once.
    It should have type: int * int -> bool
 *)
-let prodInrange ((x : int), (y : int)) = 
+let prodInRange ((x : int), (y : int)) = 
       let ans = (x*y) in 
          if ans > 10 && ans < 20 
          then true 
