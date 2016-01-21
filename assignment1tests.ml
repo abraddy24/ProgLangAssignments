@@ -22,7 +22,7 @@ let t4b = greeting (21, "Alex") = "Greetings Alex, you are 21 years old!"
 
 let t5a = greeting2 (0, "Jackson") = "Greetings Jackson, you are not born yet!"
 let t5b = greeting2 (1, "Sam") = "Greeetings Sam, you are a youngster!"
-let t5c = greeting2 (20, "Bob") = "Greetings Bob, you are a youngster!:
+let t5c = greeting2 (20, "Bob") = "Greetings Bob, you are a youngster!"
 let t5d = greeting2 (21, "Courtney") = "Greetings Courtney, you are young at heart!"
 let t5d = greeting2 (50, "Rob") = "Greeting Rob, you are young at heart!"
 
