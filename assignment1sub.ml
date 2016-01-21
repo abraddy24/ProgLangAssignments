@@ -53,7 +53,7 @@ let distance ((x : int), (y :int)) =
    You may see "bytes" instead of "string" as a type.
 *)
 let greeting ((age : int), (name : string)) = 
-      String.concat "Greetings " [name; " you are age "; string_of_int (age); " years old!"];;
+      String.concat "Greetings " [name; ", you are age "; string_of_int (age); " years old!"];;
 
 
 (*
@@ -68,9 +68,9 @@ let greeting ((age : int), (name : string)) =
 *)
 let greeting2 ((age : int), (name : string)) = 
       if age <=0 
-      then String.concat "Greetings " [name; " you are not born yet!"] 
-      else if age > 0 && age < 21 then String.concat "Greetings " [name; " you are a youngster!"] 
-      else String.concat "Greetings " [name; " you are young at heart!"];;
+      then String.concat "Greetings " [name; ", you are not born yet!"] 
+      else if age > 0 && age < 21 then String.concat "Greetings " [name; ", you are a youngster!"] 
+      else String.concat "Greetings " [name; ", you are young at heart!"];;
 (*
    Write a function "tooShort" that is given a pair of an integer and a string
    and returns a boolean indicating whether that integer is strictly larger than
