@@ -13,7 +13,10 @@
    order (and just keeps the first in place).
    It should have type: int * int * int -> int * int * int
 *)
-let fixLastTwo  ((x : int ), (y : int), (z : int)) = if z > y then (x, z, y) else (x, y, z);;
+let fixLastTwo  ((x : int ), (y : int), (z : int)) = 
+      if z > y 
+      then (x, z, y) 
+      else (x, y, z);;
 
 (*
    Write a function named "order" that takes a triple of integers and
@@ -21,7 +24,12 @@ let fixLastTwo  ((x : int ), (y : int), (z : int)) = if z > y then (x, z, y) els
    You may want to use the function from the previous part.
    It should have type: int * int * int -> int * int * int
 *)
-let order ((x : int), (y : int), (z : int)) = if (x > y && x > z && y > z) then (x,y,z) else if (y > x && y > z && x > z) then (y,x,z) else (z,y,x);;
+let order ((x : int), (y : int), (z : int)) = 
+      if (x > y && x > z && y > z) 
+      then (x,y,z) 
+      else if (y > x && y > z && x > z) 
+      then (y,x,z) 
+      else (z,y,x);;
 
 (*
    Write a function "distance" that given a pair of integers returns the
@@ -30,7 +38,10 @@ let order ((x : int), (y : int), (z : int)) = if (x > y && x > z && y > z) then 
    It should have type: int * int -> int
 *)
 
-let distance ((x : int), (y :int)) = if y > x then y - x else x - y;;
+let distance ((x : int), (y :int)) = 
+      if y > x 
+      then y - x 
+      else x - y;;
 
 
 (*
@@ -41,7 +52,8 @@ let distance ((x : int), (y :int)) = if y > x then y - x else x - y;;
    It should have type: int * string -> string
    You may see "bytes" instead of "string" as a type.
 *)
-let greeting ((age : int), (name : string)) = String.concat "Greetings " [name; " you are age "; string_of_int (age); " years old!"];;
+let greeting ((age : int), (name : string)) = 
+      String.concat "Greetings " [name; " you are age "; string_of_int (age); " years old!"];;
 
 
 (*
@@ -54,9 +66,11 @@ let greeting ((age : int), (name : string)) = String.concat "Greetings " [name; 
    It should have type: int * string -> string
    You may see "bytes" instead of "string" as a type.
 *)
-let greeting2 ((age : int), (name : string)) = String.concat "Greetings " [if (age <= 0) then [name; " you are not born yet!"] else if (1 < age < 20) then [name; " you are a youngster!"] else [name; " you are young at heart!"]];;
-
-         FIX THIS
+let greeting2 ((age : int), (name : string)) = 
+      if age <=0 
+      then String.concat "Greetings " [name; " you are not born yet!"] 
+      else if age > 0 && age < 21 then String.concat "Greetings " [name; " you are a youngster!"] 
+      else String.concat "Greetings " [name; " you are young at heart!"];;
 (*
    Write a function "tooShort" that is given a pair of an integer and a string
    and returns a boolean indicating whether that integer is strictly larger than
@@ -65,14 +79,18 @@ let greeting2 ((age : int), (name : string)) = String.concat "Greetings " [if (a
    It should have type: int * string -> bool
 *)
 
-let tooShort ((x : int), (y : string)) = if x > String.length y then true else false;;
+let tooShort ((x : int), (y : string)) = 
+      if x > String.length y 
+      then true 
+      else false;;
 
 (*
    Write a function "totalLength" that is given a pair of strings and returns
    their total length.
    It should have type string * string -> int
 *)
-let totalLength ((x : string), (y : string)) = String.length x + String.length y;;
+let totalLength ((x : string), (y : string)) = 
+      String.length x + String.length y;;
 
 
 
@@ -83,9 +101,11 @@ let totalLength ((x : string), (y : string)) = String.length x + String.length y
    string more than once.
    It should have type: string * string * string -> bool
 *)
-let orderedByLength ((x : string), (y : string), (z : string)) = if (String.length z < String.length y < String.length x) then (z,y,x) else if (String.length z < String.length x < String.length y) then (z,x,y) else if (String.length y < String.length z < String.length x) then (y,z,x)  else if (String.length y < String.length x < String.length z) then (y,x,z)  else if (String.length x < String.length z < String.length y) then (x,z,y)  else (x,y,z);;
-
-      FIX THIS
+let orderedByLength ((x : string), (y : string), (z : string)) = 
+      let lenX = String.length x and 
+         lenY = String.length y and 
+         lenZ = String.length z in 
+            lenX <= lenY && lenY <= lenZ;;
 
 (*
    Write a function "prodInRange" that is given a pair of integers, and it returns
@@ -94,5 +114,8 @@ let orderedByLength ((x : string), (y : string), (z : string)) = if (String.leng
    integers more than once.
    It should have type: int * int -> bool
 *)
-let prodInrange ((x : int), (y : int)) = if (10 < (x * y) < 20) then true else false;;
-   FIX THIS
+let prodInrange ((x : int), (y : int)) = 
+      let ans = (x*y) in 
+         if ans > 10 && ans < 20 
+         then true 
+         else false;;
