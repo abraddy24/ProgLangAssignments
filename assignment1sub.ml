@@ -13,15 +13,23 @@
    order (and just keeps the first in place).
    It should have type: int * int * int -> int * int * int
 *)
-
-
+let fixLastTwo  ((x : int ), (y : int), (z : int)) = 
+      if y > z 
+      then (x, z, y) 
+      else (x, y, z)
 (*
    Write a function named "order" that takes a triple of integers and
    returns a triple of the same integers but in increasing order.
    You may want to use the function from the previous part.
    It should have type: int * int * int -> int * int * int
 *)
-
+let order ((x : int), (y : int), (z : int)) = 
+      let (xx, yy, zz) = fixLastTwo(x, y, z) 
+  	  in if xx > yy 
+         then if xx > zz 
+         	  then (yy, zz, xx)
+              else (yy, xx, zz)
+         else (xx, yy, zz)
 
 (*
    Write a function "distance" that given a pair of integers returns the
@@ -30,8 +38,10 @@
    It should have type: int * int -> int
 *)
 
-
-
+let distance ((x : int), (y :int)) = 
+      if y > x 
+      then y - x 
+      else x - y
 
 (*
    Write a function "greeting" that given a pair of an integer (age) and
@@ -41,7 +51,8 @@
    It should have type: int * string -> string
    You may see "bytes" instead of "string" as a type.
 *)
-
+let greeting ((age : int), (name : string)) = 
+      "Greetings " ^ name ^ ", you are " ^ string_of_int (age) ^ " years old!"
 
 
 (*
@@ -54,9 +65,12 @@
    It should have type: int * string -> string
    You may see "bytes" instead of "string" as a type.
 *)
-
-
-
+let greeting2 ((age : int), (name : string)) = 
+      let greeting2 ((age : int), (name : string)) = 
+      if age <=0 
+      then "Greetings " ^ name ^ ", you are not born yet!" 
+      else if age > 0 && age < 21 then "Greetings " ^ name ^ ", you are a youngster!" 
+      else "Greetings " ^ name ^ ", you are young at heart!"
 (*
    Write a function "tooShort" that is given a pair of an integer and a string
    and returns a boolean indicating whether that integer is strictly larger than
@@ -65,15 +79,18 @@
    It should have type: int * string -> bool
 *)
 
-
+let tooShort ((x : int), (y : string)) = 
+      if x > String.length y 
+      then true 
+      else false
 
 (*
    Write a function "totalLength" that is given a pair of strings and returns
    their total length.
    It should have type string * string -> int
 *)
-
-
+let totalLength ((x : string), (y : string)) = 
+      String.length x + String.length y
 
 
 (*
@@ -83,9 +100,11 @@
    string more than once.
    It should have type: string * string * string -> bool
 *)
-
-
-
+let orderedByLength ((x : string), (y : string), (z : string)) = 
+      let lenX = String.length x and 
+         lenY = String.length y and 
+         lenZ = String.length z in 
+            lenX <= lenY && lenY <= lenZ
 
 (*
    Write a function "prodInRange" that is given a pair of integers, and it returns
@@ -94,4 +113,8 @@
    integers more than once.
    It should have type: int * int -> bool
 *)
-
+let prodInRange ((x : int), (y : int)) = 
+      let ans = (x*y) in 
+         if ans > 10 && ans < 20 
+         then true 
+         else false
