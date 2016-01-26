@@ -14,7 +14,7 @@
    It should have type: int * string list -> string
 *)
 
-let rec getnth ((n , lst) : int * string list) = "Joe" 
+let rec getnth ((n , lst) : int * string list) = match lst with | [] -> raise (Failure "getnth") | head :: rest -> if n = String.length head then head else getnth(n - 1, rest)
 
 (*
    Write a function `lookup` that takes as input a pair of a string s and a list
