@@ -37,7 +37,7 @@ let rec lookup ((s, lst) : string * (string * int) list) = match lst with | [] -
    It should have type: int list -> (int * int) list
 *)
 
-let rec inPairs (lst : int list) = match lst with | first :: second :: rest -> (first, second) :: inPairs(rest) | first :: second :: rest -> if first || second = [] then () else (first, second) :: inPairs(rest) 
+let rec inPairs (lst : int list) = match lst with | first :: second :: rest -> (first, second) :: inPairs(rest) | [] -> []
 
 (*
    Write a function `flatten` that takes as input a list of lists of integers
