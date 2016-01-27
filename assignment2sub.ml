@@ -37,8 +37,7 @@ let rec lookup ((s, lst) : string * (string * int) list) = match lst with | [] -
    It should have type: int list -> (int * int) list
 *)
 
-let rec inPairs (lst : int list) = [(1,2); (3,4)]
-
+let rec inPairs (lst : int list) = match lst with | first :: second :: rest -> (first, second) :: inPairs(rest) | first :: second :: rest -> if first || second = [] then () else (first, second) :: inPairs(rest) 
 
 (*
    Write a function `flatten` that takes as input a list of lists of integers
@@ -48,7 +47,7 @@ let rec inPairs (lst : int list) = [(1,2); (3,4)]
    It should have type: int list list -> int list
 *)
 
-let rec flatten (lst : int list list) = [1; 2; 3; 4]
+let rec flatten (lst : int list list) = match lst with | [] -> [] | head :: tail -> head @ flatten (tail)
 
 (*
    Write a function `remove` that takes as input a pair of an integer n and a
