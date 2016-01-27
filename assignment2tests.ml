@@ -43,8 +43,11 @@ let t8a = unzip2 [(1, 2); (3, 4); (5, 6)] = ([1; 3; 5], [2; 4; 6])
 let t8b = unzip2 [] = ([], [])
 let t8c = unzip2 [(8, 9)] = ([8], [9])
 let t8d = unzip2 [(9, 8); (7, 6); (5, 4); (3,2); (1, 0)] = ([9; 7; 5; 3; 1], [8; 6; 4; 2; 0])
-(*
+
 let t9a = makeChange (20, [8; 3; 2]) = Some [8; 8; 2; 2]
 let t9b = makeChange (20, [8; 3]) = Some [8; 3; 3; 3; 3]
 let t9c = makeChange (20, [13; 11]) = None
-*)
+let t9d = makeChange (0, [0]) = Some []
+let t9e = makeChange (5, [7; 9]) = None
+let t9f = makeChange (9, [8; 1; 12]) = Some [8; 1]
+let t9g = makeChange (6, [3]) = Some [3; 3]
