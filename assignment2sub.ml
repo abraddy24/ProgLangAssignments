@@ -104,6 +104,4 @@ let rec unzip2 (lst : (int * int) list) = match lst with | [] -> ([], []) | (x,y
    write some good tests of this behavior.
    It should have type: int * int list -> int list option
 *)
-(*
-let rec makeChange ((n, lst) : int * int list) = 
-*)
+let rec makeChange ((n, lst) : int * int list) = if n < 0 then None else if n = 0 then Some [] else match lst with | [] -> None | head :: rest -> let recCall = makeChange (n - head, lst) in match recCall with | None -> makeChange (n, rest) | Some i -> Some (head :: i)
