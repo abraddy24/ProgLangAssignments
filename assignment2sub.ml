@@ -14,7 +14,7 @@
    It should have type: int * string list -> string
 *)
 
-let rec getnth ((n , lst) : int * string list) = match lst with | [] -> raise (Failure "getnth") | head :: rest -> if n = String.length head then head else getnth(n - 1, rest)
+let rec getnth ((n , lst) : int * string list) = match lst with | head :: rest -> if n > 0 then if n <> 1 then getnth (n - 1, rest) else head else raise (Failure "getnth") | [] -> raise (Failure "getnth")
 
 (*
    Write a function `lookup` that takes as input a pair of a string s and a list
@@ -37,7 +37,7 @@ let rec lookup ((s, lst) : string * (string * int) list) = match lst with | [] -
    It should have type: int list -> (int * int) list
 *)
 
-let rec inPairs (lst : int list) = match lst with | first :: second :: rest -> (first, second) :: inPairs(rest) | [] -> []
+let rec inPairs (lst : int list) = match lst with | first :: second :: rest -> (first, second) :: inPairs(rest) | [] -> [] | _ :: [] -> []
 
 (*
    Write a function `flatten` that takes as input a list of lists of integers
@@ -55,7 +55,7 @@ let rec flatten (lst : int list list) = match lst with | [] -> [] | head :: tail
    It should have type: int * int list -> int list
 *)
 
-let rec remove ((n, lst) : int * int list) = match lst with | head :: tail -> if head = n then remove (n, tail) else remove (n, tail) | [] -> []
+let rec remove ((n, lst) : int * int list) = match lst with | head :: tail -> if head = n then remove (n, tail) else  head :: remove (n, tail) | [] -> []
 
 (*
    Write a function `removeDups` that takes a list of integers and returns a
@@ -104,6 +104,6 @@ let rec unzip2 (lst : (int * int) list) = match lst with | [] -> ([], []) | (x,y
    write some good tests of this behavior.
    It should have type: int * int list -> int list option
 *)
-
+(*
 let rec makeChange ((n, lst) : int * int list) = 
-
+*)
