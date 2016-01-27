@@ -55,7 +55,7 @@ let rec flatten (lst : int list list) = match lst with | [] -> [] | head :: tail
    It should have type: int * int list -> int list
 *)
 
-let rec remove ((n, lst) : int * int list) = [1; 2; 3; 4]
+let rec remove ((n, lst) : int * int list) = match lst with | head :: tail -> if head = n then remove (n, tail) else remove (n, tail) | [] -> []
 
 (*
    Write a function `removeDups` that takes a list of integers and returns a
