@@ -66,7 +66,7 @@ let rec remove ((n, lst) : int * int list) = match lst with | head :: tail -> if
 *)
 
 
-let rec removeDups (lst : int list) = [1; 2; 3; 4]
+let rec removeDups (lst : int list) = match lst with | [] ->[] | head :: tail -> head :: (removeDups(remove(head, tail)))
 
 (*
    Write a function `collateSome` that takes as input a list of int options
