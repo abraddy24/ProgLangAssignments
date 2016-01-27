@@ -76,7 +76,7 @@ let rec removeDups (lst : int list) = match lst with | [] ->[] | head :: tail ->
    It should have type: int option list -> int list
 *)
 
-let rec collateSome (lst : int option list) = [1; 3; 5] 
+let rec collateSome (lst : int option list) = match lst with | [] -> [] | Some head :: tail -> head :: collateSome(tail) | None :: rest -> collateSome(rest)
 
 
 (*
