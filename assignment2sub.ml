@@ -14,7 +14,14 @@
    It should have type: int * string list -> string
 *)
 
-let rec getnth ((n , lst) : int * string list) = match lst with | head :: rest -> if n > 0 then if n <> 1 then getnth (n - 1, rest) else head else raise (Failure "getnth") | [] -> raise (Failure "getnth")
+let rec getnth ((n , lst) : int * string list) = 
+   match lst with 
+      | head :: rest -> if n > 0 
+                        then if n <> 1 
+                              then getnth (n - 1, rest) 
+                              else head 
+                        else raise (Failure "getnth") 
+      | [] -> raise (Failure "getnth")
 
 (*
    Write a function `lookup` that takes as input a pair of a string s and a list
@@ -25,7 +32,12 @@ let rec getnth ((n , lst) : int * string list) = match lst with | head :: rest -
    It should have type: string * (string * int) list -> int option
 *)
 
-let rec lookup ((s, lst) : string * (string * int) list) = match lst with | [] -> None | ((str, i) as head) :: tail -> if str = s then Some i else lookup (s, tail)
+let rec lookup ((s, lst) : string * (string * int) list) = 
+   match lst with 
+      | [] -> None 
+      | ((str, i) as head) :: tail -> if str = s 
+                                      then Some i 
+                                      else lookup (s, tail)
 
 
 (*
@@ -37,7 +49,11 @@ let rec lookup ((s, lst) : string * (string * int) list) = match lst with | [] -
    It should have type: int list -> (int * int) list
 *)
 
-let rec inPairs (lst : int list) = match lst with | first :: second :: rest -> (first, second) :: inPairs(rest) | [] -> [] | _ :: [] -> []
+let rec inPairs (lst : int list) = 
+   match lst with 
+      | first :: second :: rest -> (first, second) :: inPairs(rest) 
+      | [] -> [] 
+      | _ :: [] -> []
 
 (*
    Write a function `flatten` that takes as input a list of lists of integers
@@ -47,7 +63,10 @@ let rec inPairs (lst : int list) = match lst with | first :: second :: rest -> (
    It should have type: int list list -> int list
 *)
 
-let rec flatten (lst : int list list) = match lst with | [] -> [] | head :: tail -> head @ flatten (tail)
+let rec flatten (lst : int list list) = 
+   match lst with 
+      | [] -> [] 
+      | head :: tail -> head @ flatten (tail)
 
 (*
    Write a function `remove` that takes as input a pair of an integer n and a
@@ -55,7 +74,11 @@ let rec flatten (lst : int list list) = match lst with | [] -> [] | head :: tail
    It should have type: int * int list -> int list
 *)
 
-let rec remove ((n, lst) : int * int list) = match lst with | head :: tail -> if head = n then remove (n, tail) else  head :: remove (n, tail) | [] -> []
+let rec remove ((n, lst) : int * int list) = 
+   match lst with 
+      | head :: tail -> if head = n 
+                        then remove (n, tail) 
+                        else  head :: remove (n, tail) | [] -> []
 
 (*
    Write a function `removeDups` that takes a list of integers and returns a
@@ -66,7 +89,10 @@ let rec remove ((n, lst) : int * int list) = match lst with | head :: tail -> if
 *)
 
 
-let rec removeDups (lst : int list) = match lst with | [] ->[] | head :: tail -> head :: (removeDups(remove(head, tail)))
+let rec removeDups (lst : int list) = 
+   match lst with 
+      | [] ->[] 
+      | head :: tail -> head :: (removeDups(remove(head, tail)))
 
 (*
    Write a function `collateSome` that takes as input a list of int options
@@ -76,7 +102,11 @@ let rec removeDups (lst : int list) = match lst with | [] ->[] | head :: tail ->
    It should have type: int option list -> int list
 *)
 
-let rec collateSome (lst : int option list) = match lst with | [] -> [] | Some head :: tail -> head :: collateSome(tail) | None :: rest -> collateSome(rest)
+let rec collateSome (lst : int option list) = 
+   match lst with 
+      | [] -> [] 
+      | Some head :: tail -> head :: collateSome(tail) 
+      | None :: rest -> collateSome(rest)
 
 
 (*
@@ -87,7 +117,11 @@ let rec collateSome (lst : int option list) = match lst with | [] -> [] | Some h
    It should have type: (int * int) list -> int list * int list
 *)
 
-let rec unzip2 (lst : (int * int) list) = match lst with | [] -> ([], []) | (x,y) :: tail -> let l1, l2 = unzip2 (tail) in x :: l1, y :: l2
+let rec unzip2 (lst : (int * int) list) = 
+   match lst with 
+      | [] -> ([], []) 
+      | (x,y) :: tail -> let l1, l2 = unzip2 (tail) 
+                         in x :: l1, y :: l2
 
 
 (*
@@ -104,4 +138,14 @@ let rec unzip2 (lst : (int * int) list) = match lst with | [] -> ([], []) | (x,y
    write some good tests of this behavior.
    It should have type: int * int list -> int list option
 *)
-let rec makeChange ((n, lst) : int * int list) = if n < 0 then None else if n = 0 then Some [] else match lst with | [] -> None | head :: rest -> let recCall = makeChange (n - head, lst) in match recCall with | None -> makeChange (n, rest) | Some i -> Some (head :: i)
+let rec makeChange ((n, lst) : int * int list) = 
+   if n < 0 
+   then None 
+   else if n = 0 
+        then Some [] 
+        else match lst with 
+                | [] -> None 
+                | head :: rest -> let recCall = makeChange (n - head, lst) 
+                                  in match recCall with 
+                                       | None -> makeChange (n, rest) 
+                                       | Some i -> Some (head :: i)
