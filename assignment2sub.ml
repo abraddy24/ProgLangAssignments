@@ -87,7 +87,7 @@ let rec collateSome (lst : int option list) = match lst with | [] -> [] | Some h
    It should have type: (int * int) list -> int list * int list
 *)
 
-let rec unzip2 (lst : (int * int) list) = ([1; 4; 6], [2; 5; 7])
+let rec unzip2 (lst : (int * int) list) = match lst with | [] -> ([], []) | (x,y) :: tail -> let l1, l2 = unzip2 (tail) in x :: l1, y :: l2
 
 
 (*
@@ -105,5 +105,5 @@ let rec unzip2 (lst : (int * int) list) = ([1; 4; 6], [2; 5; 7])
    It should have type: int * int list -> int list option
 *)
 
-let rec makeChange ((n, lst) : int * int list) = Some [1; 2; 3]
+let rec makeChange ((n, lst) : int * int list) = 
 
