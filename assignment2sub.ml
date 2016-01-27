@@ -25,8 +25,7 @@ let rec getnth ((n , lst) : int * string list) = match lst with | [] -> raise (F
    It should have type: string * (string * int) list -> int option
 *)
 
-let rec lookup ((s, lst) : string * (string * int) list) = head 
-   (*match String.length s with | 0 -> "None" | head :: rest -> if String.length s = String.length head then Some y else lookup(s, (rest))*)
+let rec lookup ((s, lst) : string * (string * int) list) = match lst with | [] -> None | ((str, i) as head) :: tail -> if str = s then Some i else lookup (s, tail)
 
 
 (*
