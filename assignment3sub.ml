@@ -72,7 +72,7 @@ let is_tie ((chk) : check) : bool = result chk = Tie
    other, stop at the shortest one.
    Type: play * play -> game
 *)
-let game_from_plays ((ply1, ply2) : play * play) : game = [(Paper, Paper)]
+let rec game_from_plays ((ply1, ply2) : play * play) : game = match (ply1, ply2) with | ([], []) | ([], _) | (_, []) -> ([]) | (head1 :: rest1, head2 :: rest2) -> (head1, head2) :: game_from_plays (rest1, rest2)
 
 
 
