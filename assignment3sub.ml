@@ -121,7 +121,7 @@ let to_f ((tmp) : temp) : float = match tmp with | F f -> f | C c -> 1.8 *. c +.
    equal and -1 if the second temperature is higher.
    Type: temp * temp -> int
 *)
-let temp_compare ((tmp1, tmp2) : temp * temp) : int = 5
+let temp_compare ((tmp1, tmp2) : temp * temp) : int = match (tmp1, tmp2) with | (C n1, C n2) | (F n1, F n2) -> if n1 = n2 then 0 else if n1 > n2 then 1 else -1 | (C n1, F n2) -> let n2' = to_f (C n1) in if n2 = n2' then 0 else if n2 > n2' then -1 else 1 | (F n1, C n2) -> let n1' = to_f (C n2) in if n1 > n1' then 0 else if n1 > n1' then 1 else -1
 
 
 
