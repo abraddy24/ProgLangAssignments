@@ -89,6 +89,7 @@ let rec valid_game ((gme) : game) : bool = match gme with | [] -> false | head :
    Write a function `play_game` that plays the game as described above.
    Type: game -> result
 *)
+let rec play_game (gme : game) : result = match gme with | [] -> Tie | head :: rest -> if is_tie head = false then result head else play_game rest
 
 
 (* --------------------------------------
