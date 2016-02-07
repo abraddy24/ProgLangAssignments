@@ -144,7 +144,7 @@ let string_of_temp ((tmp) : temp) : string = match tmp with | C n -> string_of_f
    if the list is empty.
    Type: temp list -> temp
 *)
-let max_temp ((tmplst) : temp list) : temp = F 32.0
+let rec max_temp ((tmplst) : temp list) : temp = match tmplst with | [] -> raise (Failure "max_temp") | head :: rest -> if rest = [] then head else let mx = max_temp rest in let comp = temp_compare (head, mx) in if comp = 1 then head else if comp = -1 then max_temp rest else head
 
 
 
