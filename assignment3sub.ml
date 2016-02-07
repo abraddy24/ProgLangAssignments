@@ -60,7 +60,7 @@ let result ((chk) : check) : result = match chk with | (Paper, Rock) | (Scissors
    whether the check's result is a tie.
    Type: check -> bool
 *)
-let is_tie ((chk) : check) : bool = true
+let is_tie ((chk) : check) : bool = result chk = Tie
 
 
 
