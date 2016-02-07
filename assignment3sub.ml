@@ -133,7 +133,7 @@ let temp_compare ((tmp1, tmp2) : temp * temp) : int = match (tmp1, tmp2) with | 
    to strings.
    Type: temp -> string
 *)
-let string_of_temp ((tmp) : temp) : string = "hello"
+let string_of_temp ((tmp) : temp) : string = match tmp with | C n -> string_of_float n ^ "C" | F n -> string_of_float n ^ "F"
 
 
 
