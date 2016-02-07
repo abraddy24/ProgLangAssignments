@@ -153,5 +153,5 @@ let rec max_temp ((tmplst) : temp list) : temp = match tmplst with | [] -> raise
    recursive calls are tail calls. You will likely need to define an auxiliary
    function and use state recursion.
 *)
-let max_temp2 ((tmplst) : temp list) : temp = F 32.0
+let rec max_temp2 ((tmplst) : temp list) : temp = if tmplst = [] then raise (Failure "max_temp2") else let rec aux (lst) : temp = match lst with | [] -> F (1000000.0) | head :: rest -> let comp = temp_compare (head, aux rest) in if comp = 1 then head else if comp = -1 then aux rest else head in aux tmplst
 
