@@ -81,7 +81,7 @@ let rec game_from_plays ((ply1, ply2) : play * play) : game = match (ply1, ply2)
    a valid game as described above.
    Type: game -> bool
 *)
-let valid_game ((gme) : game) : bool = true 
+let rec valid_game ((gme) : game) : bool = match gme with | [] -> false | head :: rest -> let ans =  is_tie head = true in let continue = valid_game rest in if ans = false || continue = false then false else ans = continue
 
 
 
