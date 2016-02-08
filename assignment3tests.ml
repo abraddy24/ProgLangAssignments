@@ -38,6 +38,9 @@ let t5d = play_game [(Paper, Paper); (Rock, Rock); (Scissors, Scissors); (Paper,
 let t5e = play_game [(Rock, Paper)] = SndWin
 
 let t6a = to_f (F 2.3) = 2.3
+let t6b = to_f (C 0.0) = 32.0
+let t6c = to_f (C 100.0) = 212.0
+let t6d = to_f (F 32.0) = 32.0
 
 let t7a = temp_compare (F 2.3, F 4.5) = -1
 
