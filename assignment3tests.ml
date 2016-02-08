@@ -9,6 +9,12 @@ let t1h = result (Rock, Rock) = Tie
 let t1i = result (Scissors, Scissors) = Tie
 
 let t2a = is_tie (Rock, Paper) = false
+let t2a = is_tie (Rock, Paper) = false
+let t2b = is_tie (Scissors, Paper) = false
+let t2c = is_tie (Rock, Paper) = false
+let t2d = is_tie (Rock, Rock) = true
+let t2e = is_tie (Paper, Paper) = true
+let t2f = is_tie (Scissors, Scissors) = true
 
 let t3a = game_from_plays ([Rock; Paper; Rock], [Scissors; Rock; Rock]) =
                [(Rock, Scissors); (Paper, Rock); (Rock, Rock)]
