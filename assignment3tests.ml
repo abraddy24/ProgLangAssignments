@@ -54,4 +54,5 @@ let t9b = max_temp [F 32.0; C 1.0] = C 1.0
 let t9b = max_temp [F 212.0; C 99.0] = F 212.0
 
 let t10a = max_temp2 [F 2.1; C 2.1] = C 2.1
-
+let t10b = max_temp2 [F 32.0; C 1.0] = C 1.0
+let t10b = max_temp2 [F 212.0; C 99.0] = F 212.0
