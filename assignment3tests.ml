@@ -50,6 +50,8 @@ let t8a = string_of_temp (C 2.3) = "2.3C"
 let t8b = string_of_temp (F 32.0) = "32.F"
 
 let t9a = max_temp [F 2.1; C 2.1] = C 2.1
+let t9b = max_temp [F 32.0; C 1.0] = C 1.0
+let t9b = max_temp [F 212.0; C 99.0] = F 212.0
 
 let t10a = max_temp2 [F 2.1; C 2.1] = C 2.1
 
