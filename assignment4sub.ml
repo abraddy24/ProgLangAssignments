@@ -42,6 +42,7 @@ let thunk f () = f
    simple function.
    Should have type: 'a -> 'a thunk
 *)
+let thunk_of_value a = fun () -> a
 
 
 
