@@ -213,6 +213,7 @@ let rec delete (st, s) = let nwlst = [] in match st with (sv, ve) :: rest -> if 
    of the keys in the table.
    It should have type: 'a table -> symbol list
 *)
+let keys st = let nwlst = [] in match st with | [] -> [] | (sv, ve) :: rest -> sv :: nwlst
 
 
 
