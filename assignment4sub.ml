@@ -180,6 +180,7 @@ let rec has (st, s) = match st with | (sv, ve) :: rest -> if s = sv then true el
    It should not look any further in the list than is necessary.
    It should have type: 'a table * symbol -> 'a
 *)
+let rec lookup (st, s) = match st with | (sv, ve) :: rest -> if s = sv then ve else lookup (rest, s) | [] -> raise Not_found
 
 
 
