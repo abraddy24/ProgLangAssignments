@@ -167,6 +167,7 @@ let rec insert (st, s, v) = match st with | [] -> (s, v) :: [] | (se, ve) :: res
    keys are bigger than the searched-for key there is no need to continue the search.
    It should have type: 'a table * symbol -> bool
 *)
+let rec has (st, s) = match st with | (sv, ve) :: rest -> if s = sv then true else has (rest, s) | [] -> false
 
 
 
