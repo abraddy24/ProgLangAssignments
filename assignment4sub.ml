@@ -101,6 +101,7 @@ let thunk_map (t, f) = fun () -> f (t ())
    called.
    It should have type: 'a thunk list -> 'a list thunk
 *)
+let thunk_of_list lst = fun () -> let nwlst = [] in match lst with | head :: rest ->  thunk_of_value head :: nwlst | [] -> []
 
 
 
