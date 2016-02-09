@@ -77,6 +77,7 @@ let try_thunk a () = try Some a with | Not_found -> None
    returned thunk is called.
    It should have type: 'a thunk * 'b thunk -> ('a * 'b) thunk
 *)
+let thunk_of_pair (f, g) = fun () -> (f (), g ())
 
 
 
