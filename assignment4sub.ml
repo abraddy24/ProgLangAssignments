@@ -223,4 +223,5 @@ let keys st = let nwlst = [] in match st with | [] -> [] | (sv, ve) :: rest -> s
    maintained that they keys appear in strictly increasing order.
    It should have type: 'a table -> bool
 *)
+let rec is_proper st = match st with | [] -> true | (s, v) :: (se, ve) :: rest -> let ans = s < se in let cnt = is_proper ((se, ve) :: rest) in if ans = false || cnt = false then false else true 
 
