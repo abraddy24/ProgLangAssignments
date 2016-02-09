@@ -66,6 +66,7 @@ let thunk_of_eval (f, a) = fun () -> f a
    after the "with" is a pattern.
    It should have type: 'a thunk -> 'a option
 *)
+let try_thunk a () = try Some a with | Not_found -> None
 
 
 
