@@ -204,6 +204,7 @@ let rec lookup_opt (st, s) = match st with (sv, ve) :: rest -> if s = sv then So
    It should not use `has` or any of the other functions.
    It should have type: 'a table * symbol -> 'a table
 *)
+let rec delete (st, s) = let nwlst = [] in match st with (sv, ve) :: rest -> if s <> sv then (sv, ve) :: nwlst else delete (rest, s) | [] -> []
 
 
 
