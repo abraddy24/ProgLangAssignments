@@ -193,6 +193,7 @@ let rec lookup (st, s) = match st with | (sv, ve) :: rest -> if s = sv then ve e
    It should not look any further in the list than is necessary.
    It should have type: 'a table * symbol -> 'a option
 *)
+let rec lookup_opt (st, s) = match st with (sv, ve) :: rest -> if s = sv then Some ve else lookup_opt (rest, s) | [] -> None
 
 
 
