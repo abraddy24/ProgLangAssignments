@@ -158,7 +158,13 @@ let empty : 'a table = []   (* A more intuitive notation for the empty list/tabl
    insert (empty, "foo", 3) = [("foo", 3)]
    It should have type: 'a table * symbol * 'a -> 'a table
 *)
-let rec insert (st, s, v) = match st with | [] -> (s, v) :: [] | (se, ve) :: rest -> if s = se then (s, v) :: rest else if s < se then (s, v) :: (se, ve) :: rest else (se, ve) :: insert(rest, s, v) 
+let rec insert (st, s, v) = match st with 
+                            | [] -> (s, v) :: [] 
+                            | (se, ve) :: rest -> if s = se 
+                                                  then (s, v) :: rest 
+                                                  else if s < se 
+                                                       then (s, v) :: (se, ve) :: rest 
+                                                       else (se, ve) :: insert(rest, s, v) 
 
 
 
@@ -170,7 +176,10 @@ let rec insert (st, s, v) = match st with | [] -> (s, v) :: [] | (se, ve) :: res
    keys are bigger than the searched-for key there is no need to continue the search.
    It should have type: 'a table * symbol -> bool
 *)
-let rec has (st, s) = match st with | (sv, ve) :: rest -> if s = sv then true else has (rest, s) | [] -> false
+let rec has (st, s) = match st with 
+                      | (sv, ve) :: rest -> if s = sv 
+                                            then true 
+                                            else has (rest, s) | [] -> false
 
 
 
@@ -183,7 +192,13 @@ let rec has (st, s) = match st with | (sv, ve) :: rest -> if s = sv then true el
    It should not look any further in the list than is necessary.
    It should have type: 'a table * symbol -> 'a
 *)
-let rec lookup (st, s) = match st with | [] -> raise (Not_found) | (sv, ve) :: rest -> if s = sv then ve else if sv > s then raise (Not_found) else lookup (rest, s)
+let rec lookup (st, s) = match st with 
+                         | [] -> raise (Not_found) 
+                         | (sv, ve) :: rest -> if s = sv 
+                                               then ve 
+                                               else if sv > s 
+                                                    then raise (Not_found) 
+                                                    else lookup (rest, s)
 
 
 
@@ -196,7 +211,13 @@ let rec lookup (st, s) = match st with | [] -> raise (Not_found) | (sv, ve) :: r
    It should not look any further in the list than is necessary.
    It should have type: 'a table * symbol -> 'a option
 *)
-let rec lookup_opt (st, s) = match st with | [] -> None | (sv, ve) :: rest -> if s = sv then Some ve else if sv > s then None else lookup_opt (rest, s) 
+let rec lookup_opt (st, s) = match st with 
+                            | [] -> None 
+                            | (sv, ve) :: rest -> if s = sv 
+                                                  then Some ve 
+                                                  else if sv > s 
+                                                       then None 
+                                                       else lookup_opt (rest, s) 
 
 
 (*
@@ -206,7 +227,13 @@ let rec lookup_opt (st, s) = match st with | [] -> None | (sv, ve) :: rest -> if
    It should not use `has` or any of the other functions.
    It should have type: 'a table * symbol -> 'a table
 *)
-let rec delete (st, s) = match st with | [] -> [] | (sv, ve) :: rest -> if sv = s then rest else if sv > s then st else (sv, ve) :: (delete (rest, s))
+let rec delete (st, s) = match st with 
+                         | [] -> [] 
+                         | (sv, ve) :: rest -> if sv = s 
+                                               then rest 
+                                               else if sv > s 
+                                                    then st 
+                                                    else (sv, ve) :: (delete (rest, s))
 
 
 
@@ -215,7 +242,9 @@ let rec delete (st, s) = match st with | [] -> [] | (sv, ve) :: rest -> if sv = 
    of the keys in the table.
    It should have type: 'a table -> symbol list
 *)
-let rec keys st = match st with | [] -> [] | (s, v) :: rest -> s :: keys rest
+let rec keys st = match st with 
+                  | [] -> [] 
+                  | (s, v) :: rest -> s :: keys rest
 
 
 (*
@@ -224,5 +253,8 @@ let rec keys st = match st with | [] -> [] | (s, v) :: rest -> s :: keys rest
    maintained that they keys appear in strictly increasing order.
    It should have type: 'a table -> bool
 *)
-let rec is_proper st = match st with | [] -> true | head :: [] -> true | (s, v) :: (s2, v2) :: tail -> s < s2 && is_proper tail
+let rec is_proper st = match st with 
+                       | [] -> true 
+                       | head :: [] -> true 
+                       | (s, v) :: (s2, v2) :: tail -> s < s2 && is_proper tail
 
