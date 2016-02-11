@@ -104,3 +104,5 @@ let t13c = keys [] = []
 let t13d = keys [("rob", 5)] = ["rob"]
 
 let t14a = is_proper [("bar", 3); ("foo", 2)] = true
+let t14b = is_proper [] = true
+let t14c = is_proper [("bar", 3); ("zar", 6); ("car", 2)] = false
