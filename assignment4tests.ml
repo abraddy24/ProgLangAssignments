@@ -93,7 +93,10 @@ let t11c = lookup_opt ([("bob", 2); ("foo", 3); ("hello", 4)], "bob") = Some 2
 let t11d = lookup_opt ([("bob", 2); ("foo", 3); ("hello", 4)], "hello") = Some 4
 let t11e = lookup_opt ([("bob", 2); ("foo", 3); ("hello", 4)], "foo") = Some 3
 
-let t12a = delete ([("bar", 3); ("baz", 1); ("foo", 2)], "baz") = [("baz", 1); ("foo", 2)]
+let t12a = delete ([("bar", 3); ("baz", 1); ("foo", 2)], "bar") = [("baz", 1); ("foo", 2)]
+let t12b = delete ([("bob", 2); ("foo", 3); ("hello", 4)], "bob") = [("foo", 3); ("hello", 4)]
+let t12c = delete ([("bob", 2); ("foo", 3); ("hello", 4)], "hello") = [("bob", 2); ("foo", 3)]
+let t12d = delete ([("bob", 2); ("foo", 3); ("hello", 4)], "foo") = [("bob", 2); ("hello", 4)]
 
 let t13a = keys [("bar", 3); ("foo", 2)] = ["bar"; "foo"]
 
