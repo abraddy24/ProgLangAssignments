@@ -10,6 +10,9 @@ let t1d = (thunk (fun () -> 5.2)) () = 5.2
 let t1e = (thunk (fun () -> Some 3)) () = Some 3
 
 let t2a = (thunk_of_value 4) () = 4
+let t2b = (thunk_of_value 8) () = 8
+let t2c = (thunk_of_value 5.4) () = 5.4
+let t2d = (thunk_of_value 93.4) () = 93.4
 
 let t3a = try (try (thunk_of_eval ((fun x -> raise (Failure "")), 4))
                with Failure "" -> (fun () -> false)) ()
