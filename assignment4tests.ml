@@ -36,6 +36,8 @@ let t5a = let f = fun () -> raise (Failure "")
              with Failure "" -> true
                 | _ -> false
 let t5b = thunk_of_pair ((fun () -> 4), (fun () -> 5)) () = (4, 5)
+let t5c = thunk_of_pair ((fun () -> 8.7), (fun () -> 6.3)) () = (8.7, 6.3)
+let t5d = thunk_of_pair ((fun () -> 3 + 2), (fun () -> 3 - 1)) () = (5, 2)
 
 let t6a = let f = fun () -> raise (Failure "")
           in try (try thunk_map (f, f)
