@@ -80,6 +80,10 @@ let t10b = try (lookup ([("bar", 3); ("foo", 2)], "baz"); false)
    your code behaves properly. *)
 let t10c = try (lookup ([("baz", 3); ("bar", 2)], "bar"); false)
            with Not_found -> true
+let t10d = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "bob") = 2
+let t10e = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "hello") = 4
+let t10f = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "foo") = 3
+let t10g = try (lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "hi"); false) with Not_found -> true
 
 let t11a = lookup_opt ([("bar", 3); ("foo", 2)], "bar") = Some 3
 (* Again the search should be stopping after "foo" *)
