@@ -85,9 +85,13 @@ let t10e = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "hello") = 4
 let t10f = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "foo") = 3
 let t10g = try (lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "hi"); false) with Not_found -> true
 
+
 let t11a = lookup_opt ([("bar", 3); ("foo", 2)], "bar") = Some 3
 (* Again the search should be stopping after "foo" *)
 let t11b = lookup_opt ([("foo", 2); ("bar", 3)], "bar") = None
+let t11c = lookup_opt ([("bob", 2); ("foo", 3); ("hello", 4)], "bob") = Some 2
+let t11d = lookup_opt ([("bob", 2); ("foo", 3); ("hello", 4)], "hello") = Some 4
+let t11e = lookup_opt ([("bob", 2); ("foo", 3); ("hello", 4)], "foo") = Some 3
 
 let t12a = delete ([("bar", 3); ("baz", 1); ("foo", 2)], "baz") = [("baz", 1); ("foo", 2)]
 
