@@ -33,7 +33,7 @@ type 'a thunk = unit -> 'a
    and returns the `'a thunk` from it. This is an incredibly simple function.
    It should have type: (unit -> 'a) -> 'a thunk
 *)
-let thunk f () = f
+let thunk f  = f 
 
 
 (*
@@ -66,7 +66,7 @@ let thunk_of_eval (f, a) = fun () -> f a
    after the "with" is a pattern.
    It should have type: 'a thunk -> 'a option
 *)
-let try_thunk a () = try Some a with | Not_found -> None
+let try_thunk a  = try Some (a ()) with  | exn -> None
 
 
 
@@ -101,8 +101,8 @@ let thunk_map (t, f) = fun () -> f (t ())
    called.
    It should have type: 'a thunk list -> 'a list thunk
 *)
-let thunk_of_list lst = fun () -> let nwlst = [] in match lst with | head :: rest ->  thunk_of_value head :: nwlst | [] -> []
 
+let rec thunk_of_list lst = fun () -> match lst with | [] -> [] | head :: tail -> head () :: thunk_of_list tail ()
 
 
 
@@ -155,7 +155,7 @@ let empty : 'a table = []   (* A more intuitive notation for the empty list/tabl
    insert (empty, "foo", 3) = [("foo", 3)]
    It should have type: 'a table * symbol * 'a -> 'a table
 *)
-let rec insert (st, s, v) = match st with | [] -> (s, v) :: [] | (se, ve) :: rest -> if s = se then (s, v) :: rest else if s < se then (s, v) :: (se, ve) :: rest else (se, ve) :: insert(rest, s, v)
+let rec insert (st, s, v) = match st with | [] -> (s, v) :: [] | (se, ve) :: rest -> if s = se then (s, v) :: rest else if s < se then (s, v) :: (se, ve) :: rest else (se, ve) :: insert(rest, s, v) 
 
 
 
@@ -180,7 +180,7 @@ let rec has (st, s) = match st with | (sv, ve) :: rest -> if s = sv then true el
    It should not look any further in the list than is necessary.
    It should have type: 'a table * symbol -> 'a
 *)
-let rec lookup (st, s) = match st with | (sv, ve) :: rest -> if s = sv then ve else lookup (rest, s) | [] -> raise Not_found
+let rec lookup (st, s) = match st with | [] -> raise (Not_found) | (sv, ve) :: rest -> if s = sv then ve else if sv > s then raise (Not_found) else lookup (rest, s)
 
 
 
@@ -193,8 +193,7 @@ let rec lookup (st, s) = match st with | (sv, ve) :: rest -> if s = sv then ve e
    It should not look any further in the list than is necessary.
    It should have type: 'a table * symbol -> 'a option
 *)
-let rec lookup_opt (st, s) = match st with (sv, ve) :: rest -> if s = sv then Some ve else lookup_opt (rest, s) | [] -> None
-
+let rec lookup_opt (st, s) = match st with | [] -> None | (sv, ve) :: rest -> if s = sv then Some ve else if sv > s then None else lookup_opt (rest, s) 
 
 
 (*
@@ -204,7 +203,7 @@ let rec lookup_opt (st, s) = match st with (sv, ve) :: rest -> if s = sv then So
    It should not use `has` or any of the other functions.
    It should have type: 'a table * symbol -> 'a table
 *)
-let rec delete (st, s) = let nwlst = [] in match st with (sv, ve) :: rest -> if s <> sv then (sv, ve) :: nwlst else delete (rest, s) | [] -> []
+let rec delete (st, s) = match st with | [] -> [] | (sv, ve) :: rest -> if sv = s then rest else if sv > s then st else (sv, ve) :: (delete (rest, s))
 
 
 
@@ -213,8 +212,7 @@ let rec delete (st, s) = let nwlst = [] in match st with (sv, ve) :: rest -> if 
    of the keys in the table.
    It should have type: 'a table -> symbol list
 *)
-let keys st = let nwlst = [] in match st with | [] -> [] | (sv, ve) :: rest -> sv :: nwlst
-
+let rec keys st = match st with | [] -> [] | (s, v) :: rest -> s :: keys rest
 
 
 (*
@@ -223,5 +221,5 @@ let keys st = let nwlst = [] in match st with | [] -> [] | (sv, ve) :: rest -> s
    maintained that they keys appear in strictly increasing order.
    It should have type: 'a table -> bool
 *)
-let rec is_proper st = match st with | [] -> true | (s, v) :: (se, ve) :: rest -> let ans = s < se in let cnt = is_proper ((se, ve) :: rest) in if ans = false || cnt = false then false else true 
+let rec is_proper st = match st with | [] -> true | head :: [] -> true | (s, v) :: (s2, v2) :: tail -> s < s2 && is_proper tail
 
