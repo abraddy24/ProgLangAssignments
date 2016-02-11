@@ -45,6 +45,9 @@ let t6a = let f = fun () -> raise (Failure "")
              with Failure "" -> true
                 | _ -> false
 let t6b = thunk_map ((fun () -> 4), (fun x -> 2 * x)) () = 8
+let t6c = thunk_map ((fun () -> 5), (fun x -> 5 + x)) () = 10
+let t6d = thunk_map ((fun () -> 8), (fun x -> x / 2)) () = 4
+let t6e = thunk_map ((fun () -> 7), (fun x -> x - 7)) () = 0
 
 let t7a = let f = fun () -> raise (Failure "")
           in try (try thunk_of_list [f; f]
