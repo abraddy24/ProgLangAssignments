@@ -4,6 +4,7 @@ let t1a = let f = fun () -> raise (Failure "")
           in try (try (thunk f) with Failure "" -> (fun () -> false)) ()
              with Failure "" -> true
                 | _ -> false
+                
 let t1b = (thunk (fun () -> 5)) () = 5
 let t1c = (thunk (fun () -> "Hello")) () = "Hello"
 let t1d = (thunk (fun () -> 5.2)) () = 5.2
@@ -18,6 +19,7 @@ let t3a = try (try (thunk_of_eval ((fun x -> raise (Failure "")), 4))
                with Failure "" -> (fun () -> false)) ()
           with Failure "" -> true
              | _ -> false
+             
 let t3b = thunk_of_eval ((fun x -> x + 1), 5) () = 6
 let t3c = thunk_of_eval ((fun x -> x * 5), 3) () = 15
 let t3d = thunk_of_eval ((fun x -> x - 2), 6) () = 4
@@ -35,6 +37,7 @@ let t5a = let f = fun () -> raise (Failure "")
                   (0, 0)
              with Failure "" -> true
                 | _ -> false
+                
 let t5b = thunk_of_pair ((fun () -> 4), (fun () -> 5)) () = (4, 5)
 let t5c = thunk_of_pair ((fun () -> 8.7), (fun () -> 6.3)) () = (8.7, 6.3)
 let t5d = thunk_of_pair ((fun () -> 3 + 2), (fun () -> 3 - 1)) () = (5, 2)
@@ -44,6 +47,7 @@ let t6a = let f = fun () -> raise (Failure "")
                   with Failure "" -> (fun () -> false)) ()
              with Failure "" -> true
                 | _ -> false
+                
 let t6b = thunk_map ((fun () -> 4), (fun x -> 2 * x)) () = 8
 let t6c = thunk_map ((fun () -> 5), (fun x -> 5 + x)) () = 10
 let t6d = thunk_map ((fun () -> 8), (fun x -> x / 2)) () = 4
@@ -54,10 +58,13 @@ let t7a = let f = fun () -> raise (Failure "")
                   with Failure "" -> (fun () -> [])) () = []
              with Failure "" -> true
                 | _ -> false
+                
 let t7b = let f = fun () -> 5
           in thunk_of_list [f; f] () = [5; 5]
-let t7c = let f = fun () -> 8 in thunk_of_list [f; f; f] () = [8; 8; 8]
-let t7d = let f = fun () -> 2 + 3 in thunk_of_list [f] () = [5]
+let t7c = let f = fun () -> 8 
+          in thunk_of_list [f; f; f] () = [8; 8; 8]
+let t7d = let f = fun () -> 2 + 3 
+          in thunk_of_list [f] () = [5]
 
 let t8a = insert (empty, "foo", 3) = [("foo", 3)]
 let t8b = insert ([("foo", 3); ("hello", 4)], "bob", 2) = [("bob", 2); ("foo", 3); ("hello", 4)]
@@ -83,7 +90,8 @@ let t10c = try (lookup ([("baz", 3); ("bar", 2)], "bar"); false)
 let t10d = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "bob") = 2
 let t10e = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "hello") = 4
 let t10f = lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "foo") = 3
-let t10g = try (lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "hi"); false) with Not_found -> true
+let t10g = try (lookup ([("bob", 2); ("foo", 3); ("hello", 4)], "hi"); false) 
+           with Not_found -> true
 
 
 let t11a = lookup_opt ([("bar", 3); ("foo", 2)], "bar") = Some 3
