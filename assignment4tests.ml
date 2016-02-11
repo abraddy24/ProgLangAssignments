@@ -24,6 +24,11 @@ let t3d = thunk_of_eval ((fun x -> x - 2), 6) () = 4
 let t3e = thunk_of_eval ((fun x -> x / 3), 9) () = 3
 
 let t4a = try_thunk (fun () -> raise (Failure "hi")) = None
+let t4b = try_thunk (fun () -> raise (Not_found)) = None
+let t4c = try_thunk (fun () -> raise (Invalid_argument "Hello")) = None
+let t4d = try_thunk (fun () -> 5) = Some 5
+let t4e = try_thunk (fun () -> 50 + 6) = Some 56
+let t4f = try_thunk (fun () -> 2.3) = Some 2.3
 
 let t5a = let f = fun () -> raise (Failure "")
           in try (try (thunk_of_pair (f, f)) with Failure "" -> (fun () -> (1, 1))) () =
