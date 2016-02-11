@@ -60,6 +60,9 @@ let t7c = let f = fun () -> 8 in thunk_of_list [f; f; f] () = [8; 8; 8]
 let t7d = let f = fun () -> 2 + 3 in thunk_of_list [f] () = [5]
 
 let t8a = insert (empty, "foo", 3) = [("foo", 3)]
+let t8b = insert ([("foo", 3); ("hello", 4)], "bob", 2) = [("bob", 2); ("foo", 3); ("hello", 4)]
+let t8c = insert ([("bob", 2); ("hello", 4)], "foo", 3) = [("bob", 2); ("foo", 3); ("hello", 4)]
+let t8d = insert ([("bob", 2); ("foo", 3)], "hello", 4) = [("bob", 2); ("foo", 3); ("hello", 4)]
 
 let t9a = has ([("foo", 2)], "foo") = true
 
