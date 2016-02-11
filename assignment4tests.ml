@@ -19,6 +19,9 @@ let t3a = try (try (thunk_of_eval ((fun x -> raise (Failure "")), 4))
           with Failure "" -> true
              | _ -> false
 let t3b = thunk_of_eval ((fun x -> x + 1), 5) () = 6
+let t3c = thunk_of_eval ((fun x -> x * 5), 3) () = 15
+let t3d = thunk_of_eval ((fun x -> x - 2), 6) () = 4
+let t3e = thunk_of_eval ((fun x -> x / 3), 9) () = 3
 
 let t4a = try_thunk (fun () -> raise (Failure "hi")) = None
 
