@@ -66,7 +66,8 @@ let thunk_of_eval (f, a) = fun () -> f a
    after the "with" is a pattern.
    It should have type: 'a thunk -> 'a option
 *)
-let try_thunk a  = try Some (a ()) with  | exn -> None
+let try_thunk a  = try Some (a ()) with  
+                   | exn -> None
 
 
 
@@ -102,7 +103,9 @@ let thunk_map (t, f) = fun () -> f (t ())
    It should have type: 'a thunk list -> 'a list thunk
 *)
 
-let rec thunk_of_list lst = fun () -> match lst with | [] -> [] | head :: tail -> head () :: thunk_of_list tail ()
+let rec thunk_of_list lst = fun () -> match lst with 
+                                      | [] -> [] 
+                                      | head :: tail -> head () :: thunk_of_list tail ()
 
 
 
