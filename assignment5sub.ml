@@ -116,6 +116,7 @@ let rec power (calculation, x) = if x = 0 then Int 1 else if x = 1 then calculat
    - When the coefficient "a" is 1.
    It should have type: int * int -> calc
 *)
+let term (a, n) = Mul (Int a, power (Var, n))
 
 
 (*
