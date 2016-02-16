@@ -38,6 +38,15 @@ let t10j = calc_eval (Int 4, 5) = 4
 let t10k = calc_eval (Var, 8) = 8
 
 let t11a = func_of_calc (Add (Var, Int 2)) 3 = 5
+let t11b = func_of_calc (Add (Int 2, Int 2)) 3 = 4
+let t11c = func_of_calc (Sub (Int 9, Var)) 4 = 5
+let t11d = func_of_calc (Sub (Int 5, Int 3)) 8 = 2
+let t11e = func_of_calc (Mul (Var, Int 2)) 2 = 4
+let t11f = func_of_calc (Mul (Var, Var)) 5 = 25
+let t11g = func_of_calc (Parity (Var)) 3 = 1
+let t11h = func_of_calc (Parity (Int 2)) 3 = 0
+let t11i = func_of_calc (Int 8) 4 = 8
+let t11j = func_of_calc (Var) 5 = 5
 
 let t12a = subst (Add (Var, Int 1), Mul (Var, Var)) =
                 Mul (Add (Var, Int 1), Add (Var, Int 1))
