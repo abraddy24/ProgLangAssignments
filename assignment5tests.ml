@@ -60,7 +60,10 @@ let t13c = power (Var, 4) = Mul (Mul (Mul (Var, Var), Var), Var)
 let t13d = power (Var, 1) = Var
 
 
-let t14a = term (2, 1) = Mul(Int 2, Var)
+let t14a = term (2, 1) = Mul (Int 2, Var)
+let t14b = term (0, 4) = Mul (Int 0, Mul (Mul (Mul (Var, Var), Var), Var))
+let t14c = term (1, 1) = Mul (Int 1, Var)
+let t14d = term (2, 0) = Mul (Int 2, Int 1)
 
 let t15a = poly [(2, 1); (1, 4)] = Add (term (2, 1), term (1, 4))
 let t15b = poly [(2, 1); (0, 2); (1, 4)] = Add (term (2, 1), term (1, 4))
