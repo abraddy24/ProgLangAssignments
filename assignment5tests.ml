@@ -54,7 +54,11 @@ let t12c = subst (Int 2, Mul (Var, Var)) = Mul (Int 2, Int 2)
 let t12d = subst (Int 2, Var) = Int 2
 let t12e = subst (Sub (Int 8, Var), Mul (Var, Var)) = Mul (Sub (Int 8, Var), Sub (Int 8, Var))
 
-let t13a = power 3 = Mul (Mul (Var, Var), Var)
+let t13a = power (Var, 3) = Mul (Mul (Var, Var), Var)
+let t13b = power (Var, 0) = Int 1
+let t13c = power (Var, 4) = Mul (Mul (Mul (Var, Var), Var), Var)
+let t13d = power (Var, 1) = Var
+
 
 let t14a = term (2, 1) = Mul(Int 2, Var)
 
