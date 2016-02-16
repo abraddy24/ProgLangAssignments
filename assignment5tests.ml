@@ -48,8 +48,11 @@ let t11h = func_of_calc (Parity (Int 2)) 3 = 0
 let t11i = func_of_calc (Int 8) 4 = 8
 let t11j = func_of_calc (Var) 5 = 5
 
-let t12a = subst (Add (Var, Int 1), Mul (Var, Var)) =
-                Mul (Add (Var, Int 1), Add (Var, Int 1))
+let t12a = subst (Add (Var, Int 1), Mul (Var, Var)) = Mul (Add (Var, Int 1), Add (Var, Int 1))
+let t12b = subst (Mul (Var, Int 2), Add (Var, Var)) = Add (Mul (Var, Int 2), Mul (Var, Int 2))
+let t12c = subst (Int 2, Mul (Var, Var)) = Mul (Int 2, Int 2)
+let t12d = subst (Int 2, Var) = Int 2
+let t12e = subst (Sub (Int 8, Var), Mul (Var, Var)) = Mul (Sub (Int 8, Var), Sub (Int 8, Var))
 
 let t13a = power 3 = Mul (Mul (Var, Var), Var)
 
