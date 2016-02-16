@@ -64,6 +64,7 @@ let rec count_vars calculation = match calculation with | Var -> 1 | Int _ -> 0 
    described above.
    It should have type: calc * int -> int
 *)
+let rec calc_eval (calculation, x) = match calculation with | Var -> x | Int i -> i | Add (c1, c2) -> calc_eval (c1, x) + calc_eval (c2, x) | Sub (c1, c2) -> calc_eval (c1, x) - calc_eval (c2, x) | Mul (c1, c2) -> calc_eval (c1, x) * calc_eval (c2, x) | Parity c -> let ans = calc_eval (c, x) in if ans mod 2 = 0 then 0 else 1
 
 
 
