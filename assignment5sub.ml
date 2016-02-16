@@ -137,6 +137,7 @@ let term (a, n) = Mul (Int a, power (Var, n))
    cases.
    It should have type: (int * int) list -> calc
 *)
+let rec poly lst = match lst with | [] -> Int 0 | (0, t2) :: [] -> Int 0 | (t1, t2) :: [] -> term (t1, t2) | (0, t2) :: (0, tt2) :: rest -> poly rest | (0, t2) :: (tt1, tt2) :: rest -> let ans = poly rest in if ans = Int 0 then term (tt1, tt2) else Add (term (tt1, tt2), poly rest) | (t1, t2) :: (0, tt2) :: rest -> let ans = poly rest in if ans = Int 0 then term (t1, t2) else Add (term (t1, t2), poly rest) | (t1, t2) :: rest -> let ans = poly rest in if ans = Int 0 then term (t1, t2) else Add (term (t1, t2), ans)
 
 
 
