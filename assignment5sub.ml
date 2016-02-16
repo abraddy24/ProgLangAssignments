@@ -101,6 +101,7 @@ let rec subst (c1, c2) = match c2 with | Var -> c1 | Int i -> Int i | Parity c -
    n = 1, when the result should be the calculation itself.
    It should have type: calc * int -> calc
 *)
+let rec power (calculation, x) = if x = 0 then Int 1 else if x = 1 then calculation else let rec aux (acc) = let acc1 = acc - 1 in if acc1 = 1 then Mul (calculation, calculation) else Mul (aux acc1, calculation) in aux x
 
 
 
