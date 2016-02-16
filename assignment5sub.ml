@@ -76,6 +76,7 @@ let rec calc_eval (calculation, x) = match calculation with | Var -> x | Int i -
    It should have type: calc -> (int -> int)
    (though the parentheses will not show)
 *)
+let func_of_calc calculation = fun x -> calc_eval (calculation, x)
 
 
 
