@@ -192,16 +192,20 @@ let rec poly lst = match lst with | [] -> Int 0 | (0, t2) :: [] -> Int 0 | (t1, 
 (* This function stub is commented out for now so as not to throw errors when
    you work on the previous part. Delete the comment part when you want to start
    working on this function.
-
+*)
 let rec simplify c =
    let c' =
       match c with
-      | Var -> ...        (* this one's easy *)
-      | Int i -> ...      (* so is this *)
-      | Add ... -> ...    (* special add case here *)
+      | Var -> Var
+      | Int i -> Int i
+      | Add (Int 0, c1) | Add (c1, Int 0) -> c1
       | Add (c1, c2) -> Add (simplify c1, simplify c2)
-   (* more cases here. Do not use the catchall *)
+      | Sub (c1, Int 0) -> c1
+      | Sub (c1, c2) -> Sub (simplify c1, simplify c2)
+      | Sub (c1, Int i) -> Add (c1, Int (-i))
+      | Mul (Int 0, c1) | Mul (c1, Int 0) -> Int 0
+      | Mul (Int 1, c1) | Mul (c1, Int 1) -> c1
+      | Mul (c1, c2) -> Mul (simplify c1, simplify c2)
+      | Parity c1 -> c1
    in if c' = c then c' else simplify c'
-
-*)
 
