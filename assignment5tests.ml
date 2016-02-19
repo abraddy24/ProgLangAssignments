@@ -11,6 +11,7 @@ let t8i = not (has_vars (Mul (Int 7, Int 9)))
 let t8j = not (has_vars (Parity (Int 5)))
 let t8k = not (has_vars (Int 4))
 
+
 let t9a = count_vars (Add (Var, Int 2)) = 1
 let t9b = count_vars (Add (Int 1, Int 2)) = 0
 let t9c = count_vars (Add (Var, Var)) = 2
@@ -25,6 +26,7 @@ let t9k = count_vars (Parity (Var)) = 1
 let t9l = count_vars (Var) = 1
 let t9m = count_vars (Int 7) = 0
 
+
 let t10a = calc_eval (Add (Var, Int 2), 3) = 5
 let t10b = calc_eval (Add (Int 8, Int 2), 0) = 10
 let t10c = calc_eval (Add (Var, Int 4), 4) = 8
@@ -37,6 +39,7 @@ let t10i = calc_eval (Parity (Int 2), 3) = 0
 let t10j = calc_eval (Int 4, 5) = 4
 let t10k = calc_eval (Var, 8) = 8
 
+
 let t11a = func_of_calc (Add (Var, Int 2)) 3 = 5
 let t11b = func_of_calc (Add (Int 2, Int 2)) 3 = 4
 let t11c = func_of_calc (Sub (Int 9, Var)) 4 = 5
@@ -48,11 +51,13 @@ let t11h = func_of_calc (Parity (Int 2)) 3 = 0
 let t11i = func_of_calc (Int 8) 4 = 8
 let t11j = func_of_calc (Var) 5 = 5
 
+
 let t12a = subst (Add (Var, Int 1), Mul (Var, Var)) = Mul (Add (Var, Int 1), Add (Var, Int 1))
 let t12b = subst (Mul (Var, Int 2), Add (Var, Var)) = Add (Mul (Var, Int 2), Mul (Var, Int 2))
 let t12c = subst (Int 2, Mul (Var, Var)) = Mul (Int 2, Int 2)
 let t12d = subst (Int 2, Var) = Int 2
 let t12e = subst (Sub (Int 8, Var), Mul (Var, Var)) = Mul (Sub (Int 8, Var), Sub (Int 8, Var))
+
 
 let t13a = power (Var, 3) = Mul (Mul (Var, Var), Var)
 let t13b = power (Var, 0) = Int 1
@@ -73,6 +78,7 @@ let t15d = poly [(0, 1)] = Int 0
 let t15e = poly [] = Int 0
 let t15f = poly [(2, 1); (0, 1)] = term (2, 1)
 let t15g = poly [(0, 1); (2, 1)] = term (2, 1)
+
 
 let t16a = simplify (Add (Int 0, Var)) = Var
 let t16b = simplify (Add (Int 3, Int 4)) = Int 7
