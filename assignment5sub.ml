@@ -47,7 +47,14 @@ type calc = Var
    it. Do NOT use the `count_vars` that follows.
    It should have type calc -> bool
 *)
-let rec has_vars calculation = match calculation with | Var -> true | Int _ -> false | Parity c -> has_vars c | Add (c1, c2) | Sub (c1, c2) | Mul (c1, c2) -> has_vars c1 || has_vars c2
+let rec has_vars calculation = 
+   match calculation with 
+      | Var -> true 
+      | Int _ -> false 
+      | Parity c -> has_vars c 
+      | Add (c1, c2) 
+      | Sub (c1, c2) 
+      | Mul (c1, c2) -> has_vars c1 || has_vars c2
 
 
 (*
@@ -55,7 +62,14 @@ let rec has_vars calculation = match calculation with | Var -> true | Int _ -> f
    number of references to the variable in that calculation. Do NOT use `has_vars`.
    It should have type: calc -> int
 *)
-let rec count_vars calculation = match calculation with | Var -> 1 | Int _ -> 0 | Parity c -> count_vars c | Add (c1, c2) | Sub (c1, c2) | Mul (c1, c2) -> count_vars c1 + count_vars c2
+let rec count_vars calculation = 
+   match calculation with 
+      | Var -> 1 
+      | Int _ -> 0 
+      | Parity c -> count_vars c 
+      | Add (c1, c2) 
+      | Sub (c1, c2) 
+      | Mul (c1, c2) -> count_vars c1 + count_vars c2
 
 
 (*
@@ -64,7 +78,14 @@ let rec count_vars calculation = match calculation with | Var -> 1 | Int _ -> 0 
    described above.
    It should have type: calc * int -> int
 *)
-let rec calc_eval (calculation, x) = match calculation with | Var -> x | Int i -> i | Add (c1, c2) -> calc_eval (c1, x) + calc_eval (c2, x) | Sub (c1, c2) -> calc_eval (c1, x) - calc_eval (c2, x) | Mul (c1, c2) -> calc_eval (c1, x) * calc_eval (c2, x) | Parity c -> let ans = calc_eval (c, x) in if ans mod 2 = 0 then 0 else 1
+let rec calc_eval (calculation, x) = 
+   match calculation with 
+      | Var -> x 
+      | Int i -> i 
+      | Add (c1, c2) -> calc_eval (c1, x) + calc_eval (c2, x) 
+      | Sub (c1, c2) -> calc_eval (c1, x) - calc_eval (c2, x) 
+      | Mul (c1, c2) -> calc_eval (c1, x) * calc_eval (c2, x) 
+      | Parity c -> let ans = calc_eval (c, x) in if ans mod 2 = 0 then 0 else 1
 
 
 
@@ -76,7 +97,8 @@ let rec calc_eval (calculation, x) = match calculation with | Var -> x | Int i -
    It should have type: calc -> (int -> int)
    (though the parentheses will not show)
 *)
-let func_of_calc calculation = fun x -> calc_eval (calculation, x)
+let func_of_calc calculation = 
+   fun x -> calc_eval (calculation, x)
 
 
 
@@ -86,7 +108,14 @@ let func_of_calc calculation = fun x -> calc_eval (calculation, x)
    the variable in c2 with c1.
    It should have type: calc * calc -> calc
 *)
-let rec subst (c1, c2) = match c2 with | Var -> c1 | Int i -> Int i | Parity c -> subst (c1, c) | Add (c, c3) -> Add (subst (c1, c), subst (c1, c3)) | Sub (c, c3) -> Sub (subst (c1, c), subst (c1, c3)) | Mul (c, c3) -> Mul (subst (c1, c), subst (c1, c3))
+let rec subst (c1, c2) = 
+   match c2 with 
+      | Var -> c1 
+      | Int i -> Int i 
+      | Parity c -> subst (c1, c) 
+      | Add (c, c3) -> Add (subst (c1, c), subst (c1, c3)) 
+      | Sub (c, c3) -> Sub (subst (c1, c), subst (c1, c3)) 
+      | Mul (c, c3) -> Mul (subst (c1, c), subst (c1, c3))
 
 
 
@@ -101,7 +130,16 @@ let rec subst (c1, c2) = match c2 with | Var -> c1 | Int i -> Int i | Parity c -
    n = 1, when the result should be the calculation itself.
    It should have type: calc * int -> calc
 *)
-let rec power (calculation, x) = if x = 0 then Int 1 else if x = 1 then calculation else let rec aux (acc) = let acc1 = acc - 1 in if acc1 = 1 then Mul (calculation, calculation) else Mul (aux acc1, calculation) in aux x
+let rec power (calculation, x) = 
+   if x = 0 
+   then Int 1 
+   else if x = 1 
+        then calculation 
+        else let rec aux (acc) = 
+                  let acc1 = acc - 1 in 
+                      if acc1 = 1 
+                      then Mul (calculation, calculation) 
+                      else Mul (aux acc1, calculation) in aux x
 
 
 
@@ -116,7 +154,8 @@ let rec power (calculation, x) = if x = 0 then Int 1 else if x = 1 then calculat
    - When the coefficient "a" is 1.
    It should have type: int * int -> calc
 *)
-let term (a, n) = Mul (Int a, power (Var, n))
+let term (a, n) = 
+   Mul (Int a, power (Var, n))
 
 
 (*
@@ -137,7 +176,24 @@ let term (a, n) = Mul (Int a, power (Var, n))
    cases.
    It should have type: (int * int) list -> calc
 *)
-let rec poly lst = match lst with | [] -> Int 0 | (0, t2) :: [] -> Int 0 | (t1, t2) :: [] -> term (t1, t2) | (0, t2) :: (0, tt2) :: rest -> poly rest | (0, t2) :: (tt1, tt2) :: rest -> let ans = poly rest in if ans = Int 0 then term (tt1, tt2) else Add (term (tt1, tt2), poly rest) | (t1, t2) :: (0, tt2) :: rest -> let ans = poly rest in if ans = Int 0 then term (t1, t2) else Add (term (t1, t2), poly rest) | (t1, t2) :: rest -> let ans = poly rest in if ans = Int 0 then term (t1, t2) else Add (term (t1, t2), ans)
+let rec poly lst = 
+   match lst with 
+      | [] -> Int 0 
+      | (0, t2) :: [] -> Int 0 
+      | (t1, t2) :: [] -> term (t1, t2) 
+      | (0, t2) :: (0, tt2) :: rest -> poly rest 
+      | (0, t2) :: (tt1, tt2) :: rest -> let ans = poly rest in 
+                                             if ans = Int 0 
+                                             then term (tt1, tt2) 
+                                             else Add (term (tt1, tt2), poly rest) 
+      | (t1, t2) :: (0, tt2) :: rest -> let ans = poly rest in 
+                                            if ans = Int 0 
+                                            then term (t1, t2) 
+                                            else Add (term (t1, t2), poly rest) 
+      | (t1, t2) :: rest -> let ans = poly rest in 
+                                if ans = Int 0 
+                                then term (t1, t2) 
+                                else Add (term (t1, t2), ans)
 
 
 
