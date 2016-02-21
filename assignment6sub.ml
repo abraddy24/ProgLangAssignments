@@ -79,14 +79,14 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    a stream of type `'a stream` that keeps producing that value over and over.
    It should have type `'a -> 'a stream`.
 *)
-
+let rec const inpt = St (fun () -> (inpt, const inpt))
 
 (*
    Write a function `alt` that takes as input two values of some type `'a` and returns
    a stream of type `'a stream` that keeps alternating between those two values.
    It should have type `'a -> 'a -> 'a stream`.
 *)
-
+let rec alt inpt1 inpt2 = St (fun () -> (inpt1, alt inpt2 inpt1))
 
 
 (*
@@ -95,13 +95,14 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    up by step each time.
    It should have type `int -> int -> int stream`
 *)
-
+let rec seq n stp = St (fun () -> (n, seq (n + stp) stp))
 
 (*
    Write a function `from_f` that takes as input a function `int -> 'a` and returns
    an `'a stream` that produces in turn the values f 1, f 2, f 3 and so on.
    It should have type `(int -> 'a) -> 'a stream`.
 *)
+let from_f f = let rec aux i = St (fun () -> (f i, aux (i + 1))) in aux 1
 
 (*
    Write a function `from_list` that takes as input an `'a list` and returns a stream
@@ -111,7 +112,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    in search of the (nonexistent) next value, and that is OK.
    It should have type `'a list -> 'a stream`.
 *)
-
+let from_list lst = let lst1 = lst in let rec aux lst2 = St (fun () -> match lst2 with | head :: [] -> (head, aux lst) | head :: rest -> (head, aux rest)) in aux lst1
 
 (* Stream users. These functions take as input a stream, and either produce some value
    or a new stream.
@@ -121,7 +122,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    returns a list of the first n elements of the stream (and the empty list if n<=0).
    It should have type `int -> 'a stream -> 'a list`.
 *)
-
+let rec take n (St th) = if n = 0 then [] else let (v, st1) = th () in v :: take (n - 1) st1
 
 (*
    Write a function `drop` that takes as input a number `n` and a stream `st` and
@@ -129,7 +130,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    So for instance when n<=0 the original stream would be returned.
    It should have type `int -> 'a stream -> 'a stream`.
 *)
-
+let rec drop i (St th) = if i <= 0 then St th else let (v, st1) = th () in drop (i - 1) st1
 
 (*
    Write a function `prepend` that takes as input a `'a list` and a `'a stream` and
@@ -137,7 +138,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    the provided stream.
    It should have type: `'a list -> 'a stream -> 'a stream`.
 *)
-
+let rec prepend lst stm = match lst with | [] -> stm | head :: rest -> St (fun () -> (head, prepend rest stm))
 
 (*
    Write a function `map` that takes as input a function `'a -> 'b` and a `'a stream`,
@@ -147,7 +148,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    be 1, 4, 9, ...
    It should have type `('a -> 'b) -> 'a stream -> 'b stream`.
 *)
-
+let rec map f (St th) = let (v, st) = th () in St (fun () -> (f v, map f st))
 
 (*
    Write a function `pair_up` that takes as input a `'a stream` and returns a
@@ -156,14 +157,14 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    would have values (1, 2), (3, 4), (5, 6), ...
    It should have type `'a stream -> ('a * 'a) stream`.
 *)
-
+let rec pair_up (St th) = let (v1, (St th1)) = th () in let (v2, stm) = th1 () in St (fun () -> ((v1, v2), pair_up stm))
 
 (*
    Write a function `zip2` that takes as input a `'a stream` and a `'b stream` and
    returns a `('a * 'b) stream` by pairing together the corresponding values.
    It should have type `'a stream -> 'b stream -> ('a * 'b) stream`.
 *)
-
+let rec zip2 (St th1) (St th2) = St (fun () -> let (v, st1) = th1 () in let (v2, st2) = th2 () in ((v, v2), zip2 st1 st2))
 
 (*
    Write a function `accum` that takes as input a function `'b -> 'a -> 'b`, an initial
@@ -173,7 +174,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    then the resulting stream would be 5, 6, 8, 11, 15, 20, ...
    It should have type `('b -> 'a -> 'b) -> 'b -> 'a stream -> 'b stream`.
 *)
-
+let rec accum f i stm = let rec aux n i1 stm1 = St (fun () -> if n = 0 then (i1, aux (n + 1) i1 stm1) else let (St th) = stm1 in let (v, st1) = th () in let i1 = (f i1 v) in (i1, aux n i1 st1)) in aux 0 i stm 
 
 (*
    Write a function `filter` that takes as input a predicate function `'a -> bool` and
@@ -184,7 +185,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    value, if for example the predicate returns always false.
    It should have type `('a -> bool) -> 'a stream -> 'a stream`.
 *)
-
+let rec filter f (St th) = let (v, st1) = th () in if f v then St (fun () -> (v, filter f st1)) else filter f st1
 
 (*
    Write a function `collect` that takes as input an integer `n > 0` and a `'a stream`
@@ -193,6 +194,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    then `collect 3 st` is the stream [1;2;3], [4;5;6], [7;8;9], ...
    It should have type `int -> 'a stream -> 'a list stream`.
 *)
+let rec collect i stm = let rec aux n lst (St th) = let (v, st) = th () in if n = 1 then St (fun () -> (List.rev (v :: lst), collect i st)) else aux (n - 1) (v :: lst) st in aux i [] stm
 
 
 (*
@@ -204,7 +206,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    the lists are empty.
    It should have type: `'a list stream -> 'a stream`,
 *)
-
+let rec flatten (St th) = let (v, st) = th () in let rec aux lst = match lst with | [] -> flatten st | head :: rest -> St (fun () -> (head, aux rest)) in aux v
 
 (*
    Write a function `list_combos` that takes as input a `'a stream` st1 and a `'b stream`,
@@ -227,7 +229,7 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    Reference solution is 7 lines.
    It should have type: 'a stream -> 'b stream -> ('a * 'b) list stream
 *)
-
+let list_combos st1 st2 = let rec aux lst1 lst2 (St th1) (St th2) = let ((v1, st11), (v2, st22)) = (th1 (), th2 ()) in let (lst11, lst22) = (v1:: lst1, v2 :: lst2) in St (fun () -> (List.combine lst11 (List.rev lst22), aux lst11 lst22 st11 st22)) in aux [] [] st1 st2
 
 
 (*
@@ -237,6 +239,6 @@ let take1 (St th) =      (* Pattern match on the stream variant. *)
    solution.
    It should have type: 'a stream -> 'b stream -> ('a * 'b) stream
 *)
-
+let list_combos_flat st1 st2 = flatten (list_combos st1 st2)
 
 
