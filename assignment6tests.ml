@@ -28,6 +28,7 @@ let t6b = take 4 (drop 4 (seq 5 10)) = [45; 55; 65; 75]
 let t6c = take 2 (drop 0 (seq 2 8)) = [2; 10]
 
 let t7a = take 6 (prepend [1; 2] (const 3)) = [1; 2; 3; 3; 3; 3]
+let t7b = take 5 (prepend [] (const 4)) = [4; 4; 4; 4; 4]
 
 let t8a = take 6 (map (fun x -> x * x) (seq 1 1)) = [1; 4; 9; 16; 25; 36]
 (* The next test ensures that the function is not called until the corresponding
@@ -61,7 +62,8 @@ let t14b = take 5 (flatten (collect 1 (seq 1 2))) = [1; 3; 5; 7; 9]
 let t15a = take 4 (list_combos (seq 1 1) (seq 1 1)) =
                   [[(1, 1)]; [(2, 1); (1, 2)]; [(3, 1); (2, 2); (1, 3)];
                    [(4, 1); (3, 2); (2, 3); (1, 4)]]
-let t15b = take 4 (list_combos (seq 1 1) (seq 1 2)) = [[(1, 1)]; [(2, 1); (1, 3)]; [(3, 1); (2, 3); (1, 5)]; [(4, 1); (3, 3); (2, 5); (1, 7)]]
+let t15b = take 4 (list_combos (seq 1 1) (seq 1 2)) = 
+   [[(1, 1)]; [(2, 1); (1, 3)]; [(3, 1); (2, 3); (1, 5)]; [(4, 1); (3, 3); (2, 5); (1, 7)]]
 
 let t16a = take 10 (list_combos_flat (seq 1 1) (seq 1 1)) =
                   [(1, 1); (2, 1); (1, 2); (3, 1); (2, 2); (1, 3);
