@@ -53,6 +53,10 @@
 ;; Write a function `map`. It takes two arguments: a function and a list. It then
 ;; returns a new list of the result of applying the function on each element.
 ;; The reference solution is 5 lines.
+(define (map f lt)
+  (cond [(null? lt) (list)]
+        [else (cons (f (car lt)) (map f (cdr lt)))]))
+
 
 
 ;; Write a function `map2`. It takes three arguments: a function that takes two inputs
