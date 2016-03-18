@@ -11,6 +11,10 @@
 ;; in the list that are actually numbers. You can check if something is a number via
 ;; `number?`. The result for an empty list should be 0.
 ;; The reference solution is 5 lines.
+(define (add-nums lt)
+  (cond [(null? lt) 0]
+        [(number? (car lt)) (+ (car lt) (add-nums (cdr lt)))]
+        [else (add-nums (cdr lt))]))
 
 
 ;; Write a function `length`. It takes as input a list and returns the length of the
