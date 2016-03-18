@@ -43,6 +43,11 @@
 ;; where every other term is skipped. So applied to the list `'(1 2 3)` it should return
 ;; `'(1 3)`, and the same for the list `'(1 2 3 4)`.
 ;; The reference solution is 5 lines.
+(define (every-other lt)
+  (cond [(null? lt) (list)]
+        [(null? (cdr lt)) (cons (car lt) (list))]
+        [(even? (length lt)) (cons (car lt) (every-other (cdr (cdr lt))))]
+        [else (cons (car lt) (every-other (cdr (cdr lt))))]))
 
 
 ;; Write a function `map`. It takes two arguments: a function and a list. It then
