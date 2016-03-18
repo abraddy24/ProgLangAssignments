@@ -20,6 +20,11 @@
 ;; Write a function `length`. It takes as input a list and returns the length of the
 ;; list.
 ;; The reference solution is 4 lines.
+(define length
+  (lambda (lt)
+    (if (null? lt)
+        0
+        (+ 1 (length (cdr lt))))))
 
 
 ;; Write a function `get-nth`. It takes as input a list and an integer, and it returns
