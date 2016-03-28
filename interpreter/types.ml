@@ -75,7 +75,7 @@ let eqEval v1 v2 =
 (* desugar : exprS -> exprC *)
 let rec desugar exprS = match exprS with
   | NumS i        -> NumC i
-  | BoolS b - BoolC b
+  | BoolS b -> BoolC b
   | IfS (t, o1, o2) -> IfC (desugar t, desugar o1, desugar o2)
   | NotS n -> IfC (desugar n, BoolC false, BoolC true)
   | OrS (o1, o2) -> IfC (desugar o1, IfC (desugar o2, BoolC true, BoolC false))
