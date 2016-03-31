@@ -34,8 +34,7 @@
 ;; This should be a simple consing of a binding.
 ;;
 (define (bind s v env)
-  #f)       ;   <----- Need to implement this
-
+  cons (binding s v) env)
 ;;
 ;; TODO: Implement the function lookup, that looks for the symbol s in
 ;; the structs contained in the list env, and returns the corresponding 
@@ -43,8 +42,12 @@
 ;; It should throw an appropriate "lookup failed" error if it can't find
 ;; the symbol.
 (define (lookup s env)
-  (error (string-append "lookup: symbol not defined: "
-                        (symbol->string s))))
+  (cond
+    [(null? env)
+     (error (string-append "lookup: symbol not defined: "
+                        (symbol->string s)))]
+    [(equal? (binding-s (car env)) s) (binding-v (car env))]
+    [#t (lookup s (cdr env))]))
 
 ;;            THE LANGUAGE
 ;; We define the language in terms of structs.
@@ -106,6 +109,37 @@
          (and (memq (arith-op e) (list '+ '* '- '/))
               (valid-program? (arith-e1 e))
               (valid-program? (arith-e2 e)))]
+        [(if-e? e)
+         (and (valid-program? (if-e-tst e))
+              (valid-program? (if-e-thn e))
+              (valid-program? (if-e-els e)))]
+        [(comp? e)
+         (and (memq (comp-op e) (list '< '<= '> '>=))
+              (valid-program? (comp-e1 e))
+              (valid-program? (comp-e2 e)))]
+        [(let-e? e)
+         (and (symbol? (let-e-s e))
+              (valid-program? (let-e-e1 e))
+              (valid-program? (let-e-e2 e)))]
+        [(eq-e? e)
+         (and (valid-program? (eq-e-e1 e))
+              (valid-program? (eq-e-e2 e)))]
+        [(fun? e)
+         (and (symbol? (fun-arg e))
+              (or (equal? (fun-name e) #f)
+                  (and (symbol? (fun-name e))
+                       (not (equal? (fun-name e) (fun-arg e)))))
+              (valid-program? (fun-body e)))]
+        [(call? e)
+         (and (valid-program? (call-e1 e))
+              (valid-program? (call-e2 e)))]
+        [(pair-e? e)
+         (and (valid-program? (pair-e-e1 e))
+              (valid-program? (pair-e-e2 e)))]
+        [(nul? e) #t]
+        [(isnul? e) (valid-program? (isnul-e e))]
+        [(fst? e) (valid-program? (fst-e e))]
+        [(snd? e) (valid-program? (snd-e e))]
         [else #f]))
 
 
@@ -126,7 +160,12 @@
 ;; add the rest.
 (define (value? e)
   (or (num? e)
-      #f))      ;; <---- Need to change this
+      (nul? e)
+      (clos? e)
+      (bool? e)
+      (and (pair-e? e)
+           (value? (pair-e-e1 e))
+           (value? (pair-e-e2 e)))))      
 
 ;; TODO: Write a function `value-eq?` to test if two values are "equal".
 ;; Two values `v1`, `v2` are considered equal in the following cases:
@@ -139,6 +178,12 @@
 (define (value-eq? v1 v2)
   (cond [(and (num? v1) (num? v2))
          (equal? (num-n v1) (num-n v2))]
+        [(and (bool? v1) (bool? v2))
+         (equal? (bool-b v1) (bool-b v2))]
+        [(and (pair-e? v1) (pair-e? v2))
+         (and (equal? (pair-e-e1 v1) (pair-e-e1 v2))
+              (equal? (pair-e-e2 v1) (pair-e-e2 v2)))]
+        [(and (nul? v1) (nul? v2)) #t]
         [else #f]))          ;; <---- Need to add more cases
               
 
