@@ -241,6 +241,9 @@
 ;; Some cases done for you.
 (define (interp env e)
   (cond [(num? e) e]
+        [(nul? e) e]
+        [(bool? e) e]
+        [(var? e) (lookup (var-s e) env)]
         [(arith? e)
          (let ([v1 (interp env (arith-e1 e))]
                [v2 (interp env (arith-e2 e))]
@@ -249,6 +252,54 @@
            (if (and (num? v1) (num? v2))
                (num (op (num-n v1) (num-n v2)))
                (error "interp: arithmetic on non-numbers")))]
+        [(comp? e)
+         (let ([v1 (interp env (comp-e1 e))]
+               [v2 (interp env (comp-e2 e))]
+               [op (case (comp-op e)
+                     ['< <] ['<= <=] ['> >] ['>= >=])])
+         (if (and (num? v1) (num? v2))
+             (bool (op (num-n v1) (num-n v2)))
+             (error "interp: compare on non-numbers")))]
+        [(if-e? e)
+         (let ([tst (interp env (if-e-tst e))])
+           (if (bool? tst)
+               (if (bool-b tst)
+                   (interp env (if-e-thn e))
+                   (interp env (if-e-els e)))
+               (error "interp: condition on if-e non-bools")))]
+        [(eq-e? e)
+         (let ([v1 (interp env (eq-e-e1 e))]
+               [v2 (interp env (eq-e-e2 e))])
+           (bool (value-eq? v1 v2)))]
+        [(let-e? e)
+         (let* ([v1 (interp env (let-e-e1 e))]
+                [Uenv (bind (let-e-s e) v1 env)])
+           (interp Uenv (let-e-e2 e)))]
+        [(fun? e)
+         (clos e env)]
+         [(call? e)
+         (let ([ex1 (interp env (call-e1 e))]
+               [ex2 (interp env (call-e2 e))])
+           (if (clos? ex1)
+               (if (equal? (fun-name (clos-f ex1)) #f)
+                   (interp (bind (fun-arg (clos-f ex1)) ex2 (clos-env ex1))
+                           (fun-body (clos-f ex1)))
+                   (let ([Uenv (bind (fun-name (clos-f ex1)) ex1 (clos-env ex1))])
+                     (interp (bind (fun-arg (clos-f ex1)) ex2 Uenv)
+                             (fun-body (clos-f (interp Uenv (var (fun-name (clos-f ex1)))))))))
+               (error "interp: call error on non-closure")))]
+        [(isnul? e)
+         (let ([v1 (interp env (isnul-e e))])
+           (bool (nul? v1)))]
+        [(pair-e? e)
+         (let ([v1 (interp env (pair-e-e1 e))]
+               [v2 (interp env (pair-e-e2 e))])
+           (pair-e v1 v2))]
+        [(fst? e)
+         (let ([v1 (interp env (fst-e e))])
+           (if (pair-e? v1)
+               (pair-e-e2 v1)
+               (error "interp: not pair-e")))]
         [else (error "interp: unknown expression")]))
  
 ;;         EVALUATE
@@ -281,19 +332,19 @@
 ;; expressions and returns the expression that tests that they are not
 ;; equal. This should be a combination of `not-e` and `eq-e`.
 (define (neq e1 e2)
-  #f)      ; <---- Need to fix this
+  (not-e (eq-e e1 e2)))      ; <---- Need to fix this
 
 ;; TODO: Write a function `or2` that takes as input two source language
 ;; expressions `e1` and `e2` and returns the appropriate `if-e` expression
 ;; that performs the "or" of the two expressions.
 (define (or2 e1 e2)
-  #f)   ;  <----- Need to fix this
+  (if-e e1 (bool #t) (if-e e2 (bool #t) (bool #f))))  ;  <----- Need to fix this
 
 ;; TODO: Write a function `and2` that takes as input two source language
 ;; expressions `e1` and `e2` and returns the appropriate `if-e` expression
 ;; that performs the "and" of the two expressions.
 (define (and2 e1 e2)
-  #f)   ;  <----- Need to fix this
+  (if-e e1 (if-e e2 (bool #t) (bool #f)) (if-e e2 (bool #f) (bool #f))))   ;  <----- Need to fix this
 
 ;; TODO: Write a function `or-e` that takes as input any number of source
 ;; language expressions as input and creates the corresponding nested
@@ -308,7 +359,7 @@
 ;; learn about the syntax for `foldr`.
 (define or-e
   (lambda es
-    (bool #f)))      ; <------ Need to fix this
+    (foldr (lambda (v 1) (or2 v 1)) (bool #f) es)))      ; <------ Need to fix this
 
 ;; TODO: We will similarly do something for `and-e`, but for this one
 ;; we will instead build a macro. For no arguments, this should return
@@ -318,7 +369,7 @@
   (syntax-rules ()
     [(and-e) (bool #t)]
     [(and-e e1) e1]
-    [(and-e e1 e2 ...) #f]))   ; <-- Need to fix this. Use and2 and "recursion"
+    [(and-e e1 e2 ...) (and2 e1 (and-e e2 ...))]))   ; <-- Need to fix this. Use and2 and "recursion"
 
 ;; TODO: Build a `let-e*` macro that takes input like:
 ;; `(let-e* ([s1 e1] [s2 e2] ...) e)` and creates the equivalent nested 
@@ -328,7 +379,7 @@
   (syntax-rules ()
     [(let-e* () e) e]
     [(let-e* ([s1 e1]) e) (let-e s1 e1 e)]
-    [(let-e* ([s1 e1] rest ...) e) #f]))  ; <-- Need to fix this.
+    [(let-e* ([s1 e1] rest ...) e) (let-e s1 e1 (let-e* (rest ...) e))]))  ; <-- Need to fix this.
 
 ;; TODO: Write functions or macros `plus`, and `mult` that take any number
 ;; of source language expressions as arguments and creates a corresponding
