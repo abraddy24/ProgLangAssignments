@@ -358,8 +358,7 @@
 ;; You can do this with a call to `foldr`. Look at the documentation to
 ;; learn about the syntax for `foldr`.
 (define or-e
-  (lambda es
-    (foldr (lambda (v 1) (or2 v 1)) (bool #f) es)))      ; <------ Need to fix this
+  (lambda es (foldr (lambda (v l) (or2 v l)) (bool #f) es))) ; <------ Need to fix this
 
 ;; TODO: We will similarly do something for `and-e`, but for this one
 ;; we will instead build a macro. For no arguments, this should return
@@ -388,8 +387,15 @@
 ;; for 0 or 1 respectively.
 ;; You can choose either a macro approach like in `and-e` or a function
 ;; approach and `foldr` like in `or-e`.
+(define plus
+  (lambda es (foldr (lambda (v l) (plus2 v l)) (num 0) es)))
 
 
+(define-syntax mult
+  (syntax-rules ()
+    [(mult) (num 1)]
+    [(mult e1) e1]
+    [(mult e1 e2 ...) (mult2 e1 (mult2 e2 ...))]))
 
 
 ;; TODO: Write a macro `minus` that takes one or more arguments and behaves
@@ -399,7 +405,10 @@
 ;;    from the first one.
 ;; Try out the function `-` in Racket to see examples of the behavior.
 ;; Do this as a macro, similar to `and-e`.
-
+(define-syntax minus
+  (syntax-rules ()
+    [(minus arg) (arith '- (num 0) arg)]
+    [(minus arg1 arg2 ...) (arith '+ arg1 (minus (minus arg2 ...)))]))
 
 
 
@@ -418,7 +427,7 @@
 ;; Do this as a function that uses `foldr`.
 (define racketlist->sourcelist
   (lambda (exps)
-    #f))        ;  <--- Replace this with an appropriate foldr call.
+    (foldr (lambda (v l) (pair-e v l)) (nul) exps)))        ;  <--- Replace this with an appropriate foldr call.
 
 ;; TODO: Write a source language expression `map-e`. It should be a 
 ;; `fun` that takes as input a "fun" `f` and returns a `fun` that takes
@@ -426,6 +435,8 @@
 ;; function f on the list lst (when interpreted that is).
 ;; The first few lines, that set up the curried function, are done for you.
 (define map-e
-  (fun 'map 'f 
-       (fun 'inner 'lst
-            (nul))))   ; <--- Need to change this
+  (fun 'map 'f (fun 'inner 'lst
+                    (if-e (isnul (var 'lst))
+                          (nul)
+                          (pair-e (call (var 'f) (fst (var 'lst)))
+                                  (call (var 'inner) (snd (var 'lst))))))))   ; <--- Need to change this
